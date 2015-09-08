@@ -59,4 +59,25 @@ ex4pass =
   validate 4012888888881881 == True &&
   validate 4012888888881882 == False
 
-main = print (ex4pass)
+-- Exercise 5: Towers of Hanoi
+-- 1. move n − 1 discs from a to c using b as temporary storage
+-- 2. move the top disc from a to b
+-- 3. move n − 1 discs from c to b using a as temporary storage.
+
+type Peg = String
+type Move = (Peg, Peg)
+
+hanoi :: Integer -> Peg -> Peg -> Peg -> [Move]
+-- Terminator Recursive Clause | n = 1
+-- When moving one disk, top disk goes from a to b (that is the move)
+hanoi 1 a b c = [(a, b)]
+-- When moving n-disks, apply rules for list of each move needed
+hanoi n a b c =
+  hanoi (n-1) a c b ++ -- Move n - 1 disks from a to c using b as tmp storage
+  hanoi 1 a b c     ++ -- Move top disk from a to b, c is static
+  hanoi (n-1) c b a    -- Move n - 1 disks from c to b using a as tmp storage
+
+ex5pass =
+  hanoi 2 "a" "b" "c" == [("a","c"), ("a","b"), ("c","b")]
+
+main = print (ex5pass)
